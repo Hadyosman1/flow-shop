@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   title: {
     default: "Flow Shop",
     template: "%s | Flow Shop",
+    absolute:"Flow Shop"
   },
   description:
     "Flow Shop - Your one-stop destination for modern and stylish products. Discover our curated collection of high-quality items at competitive prices.",
@@ -41,7 +42,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-svh flex flex-col">
+          <div className="flex min-h-svh flex-col">
             <Header />
             <div className="grow">{children}</div>
             <Footer />

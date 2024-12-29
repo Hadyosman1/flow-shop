@@ -12,6 +12,9 @@ export default {
     extend: {
       container: {
         center: true,
+        screens: {
+          DEFAULT: `theme(maxWidth.7xl)`,
+        },
         padding: {
           DEFAULT: "1rem",
           md: "2rem",
