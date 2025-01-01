@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import "react-medium-image-zoom/dist/styles.css";
 import "./globals.css";
 
+import ReactQueryProvider from "@/components/ReactQueryProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,7 +23,7 @@ export const metadata: Metadata = {
   title: {
     default: "Flow Shop",
     template: "%s | Flow Shop",
-    absolute:"Flow Shop"
+    absolute: "Flow Shop",
   },
   description:
     "Flow Shop - Your one-stop destination for modern and stylish products. Discover our curated collection of high-quality items at competitive prices.",
@@ -42,11 +45,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex min-h-svh flex-col">
-            <Header />
-            <div className="grow">{children}</div>
-            <Footer />
-          </div>
+          <ReactQueryProvider>
+            <div className="flex min-h-svh flex-col">
+              <Header />
+              <div className="grow">{children}</div>
+              <Footer />
+            </div>
+          </ReactQueryProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

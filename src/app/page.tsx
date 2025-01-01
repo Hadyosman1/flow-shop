@@ -8,7 +8,6 @@ export default function Home() {
     <main>
       <div className="container space-y-10 py-10">
         <Banner />
-
         <Suspense fallback={<ProductCardsSkeleton />}>
           <FeaturedProducts />
         </Suspense>

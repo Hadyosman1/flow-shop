@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary py-10 sm:pt-16 lg:pt-24">
+    <footer className="bg-secondary/10 py-10 sm:pt-16 lg:pt-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-x-12 gap-y-16 md:col-span-3 lg:grid-cols-6">
           <div className="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">

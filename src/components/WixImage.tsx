@@ -37,7 +37,7 @@ const WixImage = ({
       : wixMedia.getImageUrl(mediaIdentifier).url
     : placeholder;
 
-  return <img className={props.className} src={imageUrl} alt={alt || ""} />;
+  return <img className={props.className} src={imageUrl} alt={alt ?? ""} />;
 };
 
 export default WixImage;
