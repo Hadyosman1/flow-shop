@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun } from "lucide-react";
+import { CheckIcon, MonitorIcon, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+const themeIcons = {
+  light: <Sun />,
+  dark: <Moon />,
+  system: <MonitorIcon />,
+};
+
 export function ToggleThemeBtn() {
-  const { setTheme } = useTheme();
+  const { setTheme, themes, theme: currentTheme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -25,15 +31,21 @@ export function ToggleThemeBtn() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+        {themes.map((theme) => {
+          const icon = themeIcons[theme as keyof typeof themeIcons];
+
+          return (
+            <DropdownMenuItem
+              key={theme}
+              className="cursor-pointer"
+              onClick={() => setTheme(theme)}
+            >
+              {icon}
+              <span className="capitalize">{theme}</span>
+              {currentTheme === theme && <CheckIcon />}
+            </DropdownMenuItem>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   );

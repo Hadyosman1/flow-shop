@@ -17,6 +17,7 @@ import { InfoIcon } from "lucide-react";
 import AddToCartBtn from "@/components/AddToCartBtn";
 import dynamic from "next/dynamic";
 import BackInStockNotificationBtn from "@/components/BackInStockNotificationBtn";
+import BuyNowBtn from "@/components/BuyNowBtn";
 
 const ProductMedia = dynamic(() => import("./ProductMedia"), { ssr: false });
 
@@ -116,9 +117,14 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
         </div>
 
         {isInStock ? (
-          <div className="pt-6">
+          <div className="flex items-center gap-2.5 pt-6">
             <AddToCartBtn
               className="w-full"
+              product={product}
+              quantity={quantity}
+              selectedOptions={selectedOptions}
+            />
+            <BuyNowBtn
               product={product}
               quantity={quantity}
               selectedOptions={selectedOptions}
@@ -128,7 +134,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
           <>
             <p className="text-center text-muted-foreground">Out of stock</p>
             <BackInStockNotificationBtn
-            className="w-full"
+              className="w-full"
               product={product}
               selectedOptions={selectedOptions}
             />

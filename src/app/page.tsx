@@ -1,6 +1,7 @@
 import Banner from "@/components/home/Banner";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
-import { Skeleton } from "@/components/ui/skeleton";
+import ProductCardsSkeleton from "@/components/ProductCardsSkeleton";
+
 import { Suspense } from "react";
 
 export default function Home() {
@@ -15,13 +16,3 @@ export default function Home() {
     </main>
   );
 }
-
-const ProductCardsSkeleton = () => {
-  return (
-    <div className="grid grid-cols-1 gap-4 pt-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {[...Array(8)].map((_, i) => (
-        <Skeleton key={i} className="h-[450px] rounded-md" />
-      ))}
-    </div>
-  );
-};

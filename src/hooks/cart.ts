@@ -2,6 +2,7 @@ import { wixBrowserClient } from "@/lib/wix-client.browser";
 import {
   addToCart,
   AddToCartValues,
+  clearCart,
   getCart,
   removeCartItem,
   updateCartItemQuantity,
@@ -41,7 +42,8 @@ export const useAddItemToCart = () => {
       queryClient.setQueryData(queryKey, data.cart);
     },
     onError: (error) => {
-      console.error(error);
+      console.error("Error during adding item To cart", error);
+
       toast({
         variant: "destructive",
         description: "Something went wrong, Please try again.",
@@ -77,8 +79,10 @@ export const useUpdateCartItemQuantity = () => {
       return { previousCart };
     },
     onError: (error, _, context) => {
+      console.error("Error during update cart item quantity", error);
+
       queryClient.setQueryData(queryKey, context?.previousCart);
-      console.error(error);
+
       toast({
         variant: "destructive",
         description: "Something went wrong, Please try again.",
@@ -116,8 +120,10 @@ export const useRemoveCartItem = () => {
       return { previousCart };
     },
     onError: (error, _, context) => {
+      console.error("Error during remove item from cart", error);
+
       queryClient.setQueryData(queryKey, context?.previousCart);
-      console.error(error);
+
       toast({
         variant: "destructive",
         description: "Something went wrong, Please try again.",
@@ -126,5 +132,17 @@ export const useRemoveCartItem = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
     },
+  });
+};
+
+export const useClearCart = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => clearCart(wixBrowserClient),
+    onSuccess: () => {
+      queryClient.setQueryData(queryKey, null);
+      queryClient.invalidateQueries({ queryKey });
+    },
+    retry: 3,
   });
 };

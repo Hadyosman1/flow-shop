@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     "Flow Shop - Your one-stop destination for modern and stylish products. Discover our curated collection of high-quality items at competitive prices.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+}
+
+export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body

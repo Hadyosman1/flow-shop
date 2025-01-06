@@ -18,6 +18,7 @@ import {
 } from "./ui/sheet";
 import Link from "next/link";
 import WixImage from "./WixImage";
+import CheckoutBtn from "./CheckoutBtn";
 
 interface ShoppingCartBtnProps {
   initialData: currentCart.Cart | null;
@@ -109,13 +110,7 @@ const ShoppingCartBtn = ({ initialData }: ShoppingCartBtnProps) => {
                 Shipping and texas calculated at checkout
               </p>
             </div>
-            <Button
-              disabled={!totalQuantity || cartQuery.isFetching}
-              size="lg"
-              className="w-full sm:w-fit"
-            >
-              Checkout
-            </Button>
+            <CheckoutBtn disabled={!totalQuantity || cartQuery.isFetching} />
           </div>
         </SheetContent>
       </Sheet>
