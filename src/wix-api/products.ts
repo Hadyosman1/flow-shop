@@ -1,3 +1,4 @@
+import { WIX_ٍSTORES_APP_ID } from "@/lib/constants";
 import { WixClient } from "@/lib/wix-client.base";
 
 export type ProductsSort = "last_updated" | "price_asc" | "price_desc";
@@ -71,4 +72,45 @@ export async function getProductBySlug(wixClient: WixClient, slug: string) {
   if (!product || !product.visible) return null;
 
   return product;
+}
+
+export async function getRelatedProducts(
+  wixClient: WixClient,
+  productId: string,
+) {
+  const result = await wixClient.recommendations.getRecommendation(
+    [
+      {
+        _id: "68ebce04-b96a-4c52-9329-08fc9d8c1253", // From the same categories
+        appId: WIX_ٍSTORES_APP_ID,
+      },
+      {
+        _id: "d5aac1e1-2e53-4d11-85f7-7172710b4783", // Frequently bought together
+        appId: WIX_ٍSTORES_APP_ID,
+      },
+    ],
+    {
+      items: [
+        {
+          appId: WIX_ٍSTORES_APP_ID,
+          catalogItemId: productId,
+        },
+      ],
+      minimumRecommendedItems: 3,
+    },
+  );
+
+  const productsIds = result.recommendation?.items
+    .map((item) => item.catalogItemId)
+    .filter((id) => id !== undefined);
+
+  if (!productsIds || !productsIds.length) return [];
+
+  const productsResults = await wixClient.products
+    .queryProducts()
+    .in("_id", productsIds)
+    .limit(4)
+    .find();
+
+  return productsResults.items;
 }
