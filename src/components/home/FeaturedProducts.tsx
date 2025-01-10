@@ -1,11 +1,9 @@
-import { delay } from "@/lib/utils";
 import ProductCard from "../ProductCard";
 import { getCollectionBySlug } from "@/wix-api/collections";
 import { queryProducts } from "@/wix-api/products";
 import { getWixServerClient } from "@/lib/wix-client.server";
 
 const FeaturedProducts = async () => {
-  await delay(1000);
   const wixClient = await getWixServerClient();
 
   const collection = await getCollectionBySlug(wixClient, "featured-products");

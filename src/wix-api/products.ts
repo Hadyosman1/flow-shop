@@ -74,6 +74,11 @@ export async function getProductBySlug(wixClient: WixClient, slug: string) {
   return product;
 }
 
+export async function getProductById(wixClient: WixClient, productId: string) {
+  const result = await wixClient.products.getProduct(productId);
+  return result.product;
+}
+
 export async function getRelatedProducts(
   wixClient: WixClient,
   productId: string,

@@ -14,7 +14,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link
-      href={`products/${product.slug}`}
+      href={`/products/${product.slug}`}
       className="h-full rounded-md border border-muted bg-card shadow transition duration-300 hover:shadow-md hover:shadow-primary/50"
     >
       <div className="relative overflow-hidden rounded-t-[inherit]">

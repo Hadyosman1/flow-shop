@@ -1,12 +1,16 @@
-import { getProductBySlug, getRelatedProducts } from "@/wix-api/products";
-import { notFound } from "next/navigation";
-import ProductDetails from "./ProductDetails";
-import { Metadata } from "next";
-import { cache, Suspense } from "react";
-import { getWixServerClient } from "@/lib/wix-client.server";
-// import { delay } from "@/lib/utils";
 import ProductCard from "@/components/ProductCard";
+import CreateProductReviewBtn from "@/components/reviews/CreateProductReviewBtn";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getWixServerClient } from "@/lib/wix-client.server";
+import { getLoggedInMember } from "@/wix-api/members";
+import { getProductBySlug, getRelatedProducts } from "@/wix-api/products";
+import { getProductReviews } from "@/wix-api/reviews";
+import { products } from "@wix/stores";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { cache, Suspense } from "react";
+import ProductDetails from "./ProductDetails";
+import ProductReviews, { ProductReviewsSkeleton } from "./ProductReviews";
 
 const getProduct = cache(async (slug: string) => {
   const wixClient = await getWixServerClient();
@@ -57,9 +61,17 @@ const ProductDetailsPage = async ({ params }: ProductDetailsPageProps) => {
     <main>
       <div className="container space-y-10 py-10">
         <ProductDetails product={product} />
+        <hr />
         <Suspense fallback={<RelatedProductsSkeleton />}>
           <RelatedProducts productId={product._id} />
         </Suspense>
+        <hr />
+        <div className="space-y-5">
+          <h2 className="text-2xl font-bold">Buyer reviews</h2>
+          <Suspense fallback={<ProductReviewsSkeleton />}>
+            <ProductReviewsSection product={product} />
+          </Suspense>
+        </div>
       </div>
     </main>
   );
@@ -72,8 +84,6 @@ interface RelatedProductsProps {
 }
 
 const RelatedProducts = async ({ productId }: RelatedProductsProps) => {
-  // await delay(4000);
-
   const wixClient = await getWixServerClient();
   const relatedProducts = await getRelatedProducts(wixClient, productId);
 
@@ -81,7 +91,7 @@ const RelatedProducts = async ({ productId }: RelatedProductsProps) => {
 
   return (
     <section className="space-y-5">
-      <h2 className="text-2xl font-bold md:text-3xl">Related products</h2>
+      <h2 className="text-2xl font-bold">Related products</h2>
       <div className="grid grid-cols-1 gap-4 pt-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {relatedProducts.map((product) => (
           <ProductCard key={product._id} product={product} />
@@ -101,5 +111,39 @@ const RelatedProductsSkeleton = () => {
         ))}
       </div>
     </section>
+  );
+};
+
+interface ProductReviewsSectionProps {
+  product: products.Product;
+}
+
+const ProductReviewsSection = async ({
+  product,
+}: ProductReviewsSectionProps) => {
+  if (!product._id) return null;
+
+  const wixClient = await getWixServerClient();
+
+  const loggedInMember = await getLoggedInMember(wixClient);
+
+  const existingReview = loggedInMember?.contactId
+    ? (
+        await getProductReviews(wixClient, {
+          contactId: loggedInMember.contactId,
+          productId: product._id,
+        })
+      ).items[0]
+    : null;
+
+  return (
+    <div className="space-y-5">
+      <CreateProductReviewBtn
+        product={product}
+        loggedInMember={loggedInMember}
+        hasExistingReview={!!existingReview}
+      />
+      <ProductReviews product={product} />
+    </div>
   );
 };
